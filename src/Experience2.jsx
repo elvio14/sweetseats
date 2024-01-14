@@ -96,10 +96,10 @@ const Experience = () => {
           <input id="Shell" type="color" value={colorShell} onChange={changeColorShell}></input><label htmlFor="Shell">Shell</label><br/>
           <input id="SideCushion" type="color" value={colorSideCushion} onChange={changeColorSideCushion}></input><label htmlFor="SideCushion">SideCushion</label><br/>
           <input id="Wheels" type="color" value={colorWheels} onChange={changeColorWheels}></input><label htmlFor="Wheels">Wheels</label><br/>
-          
         </div>
+        <h3>Scroll to zoom, Left Mouse Button to orbit.</h3>
       </Html>
-      <group ref={chairGroup} position-y={-2.3}>
+      <group ref={chairGroup} position-y={-1.3}>
       <mesh geometry={nodes.Arm.children[1].geometry}>            <meshMatcapMaterial color={colorArms}/> </mesh>
       <mesh geometry={nodes.Arm.children[0].geometry}>            <meshMatcapMaterial color={colorArms}/> </mesh>
       <mesh geometry={nodes.ArmPads.geometry}>                    <meshMatcapMaterial color={colorArmPads}/> </mesh>
