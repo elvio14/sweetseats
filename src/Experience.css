@@ -32,6 +32,7 @@ input[type="color"]::-webkit-color-swatch {
   #customizer {
     text-align: left;
     position: absolute;
+    top: 5%;
     left: 5%;
     padding: 10px;
     border: 2px solid;

@@ -1,14 +1,8 @@
-import { useThree, extend, useFrame } from "@react-three/fiber"
 import { useRef, useState } from "react"
-//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import {useLoader} from '@react-three/fiber'
 import React from "react"
 import { Html,OrbitControls,useGLTF } from '@react-three/drei'
 
-//extend({OrbitControls, Html})
-
 const Experience = () => { 
-    //const {camera, gl} = useThree()
     const chairGroup = useRef()
     const {nodes} = useGLTF('/GamingChair7.glb')
 
@@ -68,7 +62,7 @@ const Experience = () => {
         </div>
         <h3 className="non-selectable">Scroll to zoom, Left Mouse Button to orbit.</h3>
       </Html>
-      <group ref={chairGroup} position-y={-1.3}>
+      <group ref={chairGroup} position-y={-2.4}>
         <mesh geometry={nodes.Arm.children[1].geometry}>            <meshMatcapMaterial color={colorArms}/> </mesh>
         <mesh geometry={nodes.Arm.children[0].geometry}>            <meshMatcapMaterial color={colorArms}/> </mesh>
         <mesh geometry={nodes.ArmPads.geometry}>                    <meshMatcapMaterial color={colorArmPads}/> </mesh>
