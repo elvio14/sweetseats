@@ -1,0 +1,33 @@
+#container {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    height: 90vh;
+    width: 75vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: solid 6px;
+    z-index: 0;
+    --main-color: rgb(97, 185, 161);
+}
+
+.full-height {
+    height: 100vh;
+  }
+
+#panel {
+    background-image: linear-gradient(to right, var(--main-color), white);
+    z-index: -1;
+    height: inherit;
+}
+
+#canvas {
+    height: inherit;
+    background-color: white;
+}
+
+* {
+    
+    --second-color: white;
+}

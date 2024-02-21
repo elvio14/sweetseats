@@ -5,5 +5,11 @@
 }
 
 body {
-  background-color: black;
+  background-color: rgb(255, 255, 255);
+  color: rgb(229, 229, 229);
+}
+
+#container {
+  display: grid;
+  grid-template-columns: 5fr, 8fr ;
 }

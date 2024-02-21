@@ -1,17 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
-import {Canvas} from '@react-three/fiber'
-import Experience from './Experience2.jsx'
 import './Experience.css'
-// import Customize from './Customize.jsx'
-
+import './main.css'
+import Container from './Container'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Canvas>
-    <Experience/>
-    </Canvas>
+    {
+    <Container></Container>
+    }
   </React.StrictMode>,
 )
