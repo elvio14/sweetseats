@@ -49,22 +49,34 @@ const Panel = () => {
   }
   //PRESETS
   const [presets, setPresets] = useState([])
-  const addPreset = (key, name, array) => {
-    const newPreset = {key: key,name: name, array: array}
-    setPresets([...presets, newPreset])
-  }
   const updatePresets = () => {
-    setPresets([])
+    const newPresets = []
     for(let i = 0; i < sessionStorage.length; i++){
       const key = sessionStorage.key(i)
       const value = sessionStorage.getItem(key)
-      if(value){
-        const parsed = JSON.parse(value)
-        addPreset(key, parsed.name, parsed.array)
+      if(value !== null){
+        try{
+          const parsed = JSON.parse(value)
+          newPresets.push({key: key, name: parsed.name, array: parsed.array})
+        } catch (err){
+          console.error(err.message)
+        }
+        
       }
     }
+    setPresets(newPresets)
   }
   const [nameExists, setNameExists] = useState(false)
+  const handleSelectItem = (id, key) => {
+    const items = document.getElementsByClassName(id)
+    if(items){
+      for(const item of items){
+        item.classList.remove(id)
+      }
+    }
+    const found = document.getElementById(key)
+    found.classList.add(id)
+  }
   const saveColorSet = (setName) => {
     setNameExists(false)
     const foundName = presets.find(preset => preset.key === setName)
@@ -93,42 +105,65 @@ const Panel = () => {
       statesMap[parts[i]](color)
     }
   }
-  //INITIAL COLOR
-  const initializeColors = async () => {
+  //INITIAL DESIGNS
+  const initializeMint = () => {
     const color_1 = "#5caaab"
     const color_2 = "#258580"
     const color_3 = "#ccffff"
     const color_4 = "#409696"
-    const colorArray = 
+    const colorArrayMint = 
     [
       color_1, color_2, color_1, color_4,
       color_1, color_3, color_2, color_4,
       color_1, color_2, color_3, color_3
     ]
-    applyColors(colorArray)
+
+    const object_1 = {name: 'Mint', array: colorArrayMint}
+    const object_1_str = JSON.stringify(object_1)
+    sessionStorage.setItem('Mint', object_1_str)
+    console.log('Mint inited!')
+  }
+  const initializeChili = () => {
+    const color_5 = "#de4d18"
+    const color_6 = "#ad3323"
+    const color_7 = "#fffceb"
+    const color_8 = "#b83518"
+
+    const colorArrayChili = 
+    [
+      color_5, color_6, color_5, color_8,
+      color_5, color_7, color_6, color_8,
+      color_5, color_6, color_7, color_7
+    ]
+
+    const object_2 = {name: 'Chili', array: colorArrayChili}
+    const object_2_str = JSON.stringify(object_2)
+
+    sessionStorage.setItem('Chili', object_2_str)
+    console.log('Chili inited.')
+  }
+  const initializeDesigns = () => {
+    initializeMint()
+    initializeChili()
   }
 
   const activatePreset = (key) => {
     const preset = presets.find(preset => preset.key === key)
     const colorArray = preset.array
-    const items = document.getElementsByClassName('selected-preset')
-    if(items){
-      for(const item of items){
-        item.classList.remove('selected-preset')
-      }
-    }
-
-
-    const found = document.getElementById(key)
-    found.classList.add('selected-preset')
-
+    handleSelectItem('selected-preset', key)
     applyColors(colorArray)
   }
 
   useEffect(()=>{
     sessionStorage.clear()
-    initializeColors()
+    initializeChili()
+    initializeMint()
+   
+    updatePresets()
+
   }, [])
+
+  
   
   //states
   const [savePresetInitiated, setSavePreset] = useState(false)
