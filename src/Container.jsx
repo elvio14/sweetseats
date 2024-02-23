@@ -32,7 +32,7 @@ const Container = () => {
         <div id='panel'>
           <Panel></Panel>
         </div>
-        <div id="canvas" className='full-height'>
+        <div id="canvas" className='full-height' style={{'cursor': 'pointer'}}>
           <Canvas>
             <Experience/>
           </Canvas>

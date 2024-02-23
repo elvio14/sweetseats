@@ -5,131 +5,148 @@ import './Panel.css'
 
 const Panel = () => {
 
-    const {
-        colorArms, setColorArms,
-        colorArmPads, setColorArmPads,
-        colorBack, setColorBack,
-        colorBody, setColorBody,
-        colorCorner, setColorCorner,
-        colorPillows, setColorPillows,
-        colorLegs, setColorLegs,
-        colorPole, setColorPole,
-        colorSeatCushion, setColorSeatCushion,
-        colorShell, setColorShell,
-        colorSideCushion, setColorSideCushion,
-        colorWheels, setColorWheels
-    } = useContext(theContext)
-
-    const parts =
-    ['arms', 'armpads', 'back', 'body',
-     'corner', 'pillows', 'legs', 'pole',
-     'seatcushion', 'shell', 'sidecushion', 'wheels']
-    
-    const statesMap = {
-        [parts[0]]: setColorArms,
-        [parts[1]]: setColorArmPads,
-        [parts[2]]: setColorBack,
-        [parts[3]]: setColorBody,
-        [parts[4]]: setColorCorner,
-        [parts[5]]: setColorPillows,
-        [parts[6]]: setColorLegs,
-        [parts[7]]: setColorPole,
-        [parts[8]]: setColorSeatCushion,
-        [parts[9]]: setColorShell,
-        [parts[10]]: setColorSideCushion,
-        [parts[11]]: setColorWheels
-      }
+  const {
+      colorArms, setColorArms,
+      colorArmPads, setColorArmPads,
+      colorBack, setColorBack,
+      colorBody, setColorBody,
+      colorCorner, setColorCorner,
+      colorPillows, setColorPillows,
+      colorLegs, setColorLegs,
+      colorPole, setColorPole,
+      colorSeatCushion, setColorSeatCushion,
+      colorShell, setColorShell,
+      colorSideCushion, setColorSideCushion,
+      colorWheels, setColorWheels
+  } = useContext(theContext)
+  const parts =
+  ['arms', 'armpads', 'back', 'body',
+   'corner', 'pillows', 'legs', 'pole',
+   'seatcushion', 'shell', 'sidecushion', 'wheels']
   
-    const changeColor = (event, part) => {
-      const newColor = event.target.value
-      if(statesMap[part]){
-        statesMap[part](newColor)
-      }else{
-        console.error(`States map ${part} error.`)
+  const statesMap = {
+      [parts[0]]: setColorArms,
+      [parts[1]]: setColorArmPads,
+      [parts[2]]: setColorBack,
+      [parts[3]]: setColorBody,
+      [parts[4]]: setColorCorner,
+      [parts[5]]: setColorPillows,
+      [parts[6]]: setColorLegs,
+      [parts[7]]: setColorPole,
+      [parts[8]]: setColorSeatCushion,
+      [parts[9]]: setColorShell,
+      [parts[10]]: setColorSideCushion,
+      [parts[11]]: setColorWheels
+    }
+
+  const changeColor = (event, part) => {
+    const newColor = event.target.value
+    if(statesMap[part]){
+      statesMap[part](newColor)
+    }else{
+      console.error(`States map ${part} error.`)
+    }
+  }
+  //PRESETS
+  const [presets, setPresets] = useState([])
+  const addPreset = (key, name, array) => {
+    const newPreset = {key: key,name: name, array: array}
+    setPresets([...presets, newPreset])
+  }
+  const updatePresets = () => {
+    setPresets([])
+    for(let i = 0; i < sessionStorage.length; i++){
+      const key = sessionStorage.key(i)
+      const value = sessionStorage.getItem(key)
+      if(value){
+        const parsed = JSON.parse(value)
+        addPreset(key, parsed.name, parsed.array)
+      }
+    }
+  }
+  const [nameExists, setNameExists] = useState(false)
+  const saveColorSet = (setName) => {
+    setNameExists(false)
+    const foundName = presets.find(preset => preset.key === setName)
+    if (foundName) {
+      console.log('Found name, set name exists to true')
+      setNameExists(true)
+    }else {
+      const statesArray = [
+        colorArms, colorArmPads, colorBack, colorBody,
+        colorCorner, colorPillows, colorLegs, colorPole,
+        colorSeatCushion, colorShell, colorSideCushion, colorWheels]
+      
+      const object = {name: setName, array: statesArray}
+      const objStr = JSON.stringify(object)
+      
+      sessionStorage.setItem(setName, objStr)
+      
+      updatePresets()
+      console.log(`Saved preset ${setName}`)
+      setSavePreset(false)
+    }
+  }
+  const applyColors = (colorsData) => {
+    for(let i = 0; i < 12; i++ ){
+      const color = colorsData[i]
+      statesMap[parts[i]](color)
+    }
+  }
+  //INITIAL COLOR
+  const initializeColors = async () => {
+    const color_1 = "#5caaab"
+    const color_2 = "#258580"
+    const color_3 = "#ccffff"
+    const color_4 = "#409696"
+    const colorArray = 
+    [
+      color_1, color_2, color_1, color_4,
+      color_1, color_3, color_2, color_4,
+      color_1, color_2, color_3, color_3
+    ]
+    applyColors(colorArray)
+  }
+
+  const activatePreset = (key) => {
+    const preset = presets.find(preset => preset.key === key)
+    const colorArray = preset.array
+    const items = document.getElementsByClassName('selected-preset')
+    if(items){
+      for(const item of items){
+        item.classList.remove('selected-preset')
       }
     }
 
-    //PRESETS
-    const [presets, setPresets] = useState([])
 
-    const addPreset = (key, array) => {
-      const newPreset = {key: key, colorArray: array}
-      setPresets([...presets, newPreset])
-    }
+    const found = document.getElementById(key)
+    found.classList.add('selected-preset')
 
-    const updatePresets = () => {
-      for(let i = 0; i < sessionStorage.length; i++){
-        const key = sessionStorage.key(i)
-        const value = sessionStorage.getItem(key)
+    applyColors(colorArray)
+  }
 
-        addPreset(key, value)
-      }
-    }
-
-    const saveColorSet = (setName) => {
-        const statesArray = [
-          colorArms, colorArmPads, colorBack, colorBody,
-          colorCorner, colorPillows, colorLegs, colorPole,
-          colorSeatCushion, colorShell, colorSideCushion, colorWheels]
+  useEffect(()=>{
+    sessionStorage.clear()
+    initializeColors()
+  }, [])
   
-        const arrayStr = JSON.stringify(statesArray)
-  
-        sessionStorage.setItem(setName, arrayStr)
-  
-        updatePresets()
-      }
+  //states
+  const [savePresetInitiated, setSavePreset] = useState(false)
+  const [inputPresetName, setInputPresetName] = useState('')
+  const handleInputChange = (e) => {
+    setInputPresetName(e.target.value)
+  }
 
-    const applyColors = (colorsData) => {
-      for(let i = 0; i < 12; i++ ){
-        const color = colorsData[i]
-        statesMap[parts[i]](color)
-      }
-    }
-
-    //INITIAL COLOR
-    const initializeColors = () => {
-      const color_1 = "#5caaab"
-      const color_2 = "#258580"
-      const color_3 = "#ccffff"
-      const color_4 = "#409696"
-      const colorArray = 
-      [
-        color_1, color_2, color_1, color_4,
-        color_1, color_3, color_2, color_4,
-        color_1, color_2, color_3, color_3
-      ]
-      applyColors(colorArray)
-    }
-
-    const applyColorsFromFile = (key) => {
-        const colorArray = sessionStorage.getItem(key)
-  
-        if(!colorArray) {
-          console.error("Error getting colorArray from sessionStorage.")
-        }else{
-          applyColors(colorArray)
-        }
-      }
-
-    useEffect(()=>{
-      initializeColors()
-    }, [])
-
-    useEffect(()=>{
-        saveColorSet('Mint')
-        updatePresets()
-      }, [])
-    
-
-    return <>
+  return <>
     <div id="panel-container">
         <div id="preset" className="panel non-selectable">
-          <span>Color Presets:</span>
+          <span>Saved Designs:</span><br/>
+          {presets.length == 0 && <span>No saved designs.</span>}
           <div>
             {presets.map(set => (
-              <div key={set.key}>
-                <div className="set-thumbnail" style={{backgroundColor: set.colorArray[0] }}></div>
-                {set.key}
+              <div key={set.key} onClick={()=>activatePreset(set.key)} style={{'cursor': 'pointer'}}>
+                <div className="set-thumbnail" style={{backgroundColor: set.array[3]}}></div>
+                <span id={set.key}>{set.name}</span>
               </div>
             )
             )}
@@ -150,6 +167,24 @@ const Panel = () => {
           <input id="Shell" type="color" value={colorShell} onChange={(event) => changeColor(event, 'shell')}></input><label htmlFor="Shell">Shell</label><br/>
           <input id="SideCushion" type="color" value={colorSideCushion} onChange={(event) => changeColor(event, 'sidecushion')}></input><label htmlFor="SideCushion">Side Cushion</label><br/>
           <input id="Wheels" type="color" value={colorWheels} onChange={(event) => changeColor(event, 'wheels')}></input><label htmlFor="Wheels">Wheels</label><br/>
+            
+          
+          {!savePresetInitiated ? 
+          (
+            <button id="save-button" onClick={() => {setSavePreset(true)}}>Save Design</button>
+          ) 
+          : 
+          (
+            <div>
+              <input type="text" placeholder="Type preset name" 
+              style={{'marginBottom': '1rem', 'marginTop': '1rem', 'padding': '0.2rem'}}
+              onChange={(e) => handleInputChange(e)}
+              />
+              {nameExists === true && <span style={{'color': 'red', display: 'inline-block'}}>Pick a different name.</span>}
+              <button onClick={()=> saveColorSet(inputPresetName)}>OK</button>
+            </div> 
+          )
+          }
         </div>
 
     </div>

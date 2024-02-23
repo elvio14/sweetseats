@@ -1,8 +1,12 @@
+.selected-preset{
+  font-weight: bold;
+}
+
+
 .set-thumbnail{
     width: 10px;
     height: 10px;
     display: inline-block;
-    border:solid 1px black;
     margin-right: 0.4rem;
 }
 
@@ -13,9 +17,11 @@ input[type="color"]{
     margin: 0;
     border: 2px solid;
     border-radius: 50%;
-    width: 34px;
+    height: 20px;
+    width: 20px;
     border-color: rgb(0, 0, 0);
     background: transparent;
+    cursor: pointer;
 }
 
 input[type="color"]:hover{
@@ -54,8 +60,18 @@ label{
 #panel-container{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin-left: 2rem;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.412);
+    border-radius: 3rem;
 }
 
 #preset {
-    left: 20%;
+}
+
+#save-button{
+  margin: 1rem;
 }
