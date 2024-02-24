@@ -178,7 +178,9 @@ const Panel = () => {
           <span>Saved Designs:</span><br/>
           {presets.length == 0 && <span>No saved designs.</span>}
           <div>
-            {presets.map(set => (
+            {presets
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(set => (
               <div key={set.key} onClick={()=>activatePreset(set.key)} style={{'cursor': 'pointer'}}>
                 <div className="set-thumbnail" style={{backgroundColor: set.array[3]}}></div>
                 <span id={set.key}>{set.name}</span>
@@ -211,7 +213,7 @@ const Panel = () => {
           : 
           (
             <div>
-              <input type="text" placeholder="Type preset name" 
+              <input type="text" placeholder="Enter design name" 
               style={{'marginBottom': '1rem', 'marginTop': '1rem', 'padding': '0.2rem'}}
               onChange={(e) => handleInputChange(e)}
               />
